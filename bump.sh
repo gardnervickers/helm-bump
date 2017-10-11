@@ -2,7 +2,7 @@
 
 # bump the version of a helm chart
 # by default increment the patch (z) version
-# optionally increment or explicity set major (x) minor (y) patch (z) 
+# optionally increment or explicity set major (x) minor (y) patch (z)
 
 ARG_X=""
 ARG_Y=""
@@ -47,10 +47,10 @@ function extract_version(){
   regex="[vV]ersion: ([0-9]*)\.([0-9]*)\.([0-9]*)"
   if [[ "$SRCVER" =~ $regex ]]
   then
-    SRC_X="${BASH_REMATCH[1]}"  
-    SRC_Y="${BASH_REMATCH[2]}"  
-    SRC_Z="${BASH_REMATCH[3]}"  
-    
+    SRC_X="${BASH_REMATCH[1]}"
+    SRC_Y="${BASH_REMATCH[2]}"
+    SRC_Z="${BASH_REMATCH[3]}"
+
     debug "Existing version: $SRC_X.$SRC_Y.$SRC_Z"
   else
     echo "Error: Valid version not found in $BASEPATH"
@@ -71,12 +71,12 @@ case $i in
     ARG_Y="${i#*=}"
     ;;
     -y|--minor)
-    if [[ "x$ARG_Y" == "x" ]] 
+    if [[ "x$ARG_Y" == "x" ]]
     then
       YINC=true
     else
       doulbt_opt "-y" "-y=|--minor="
-    fi 
+    fi
     ;;
     -z=*|--patch=*)
     ARG_Z="${i#*=}"
@@ -112,7 +112,7 @@ extract_version $CHARTDIR
 USER_VERSION="x $ARG_X y $ARG_Y z $ARG_Z"
 debug "User explicit values: $USER_VERSION"
 debug "Increment flags: x $XINC y $YINC z $ZINC"
-# set user arg or default to chart version 
+# set user arg or default to chart version
 function process_point(){
   USER=$1
   EXIST=$2
@@ -121,8 +121,8 @@ function process_point(){
   # if user supplied version part use that
   if [[ "x$USER" != "x" ]]
   then
-    if [[ $USER -ge $EXIST ]] 
-    then 
+    if [[ $USER -ge $EXIST ]]
+    then
       OUT=$USER
     else
       if  [[ "$FORCE" == true ]]
@@ -136,7 +136,7 @@ function process_point(){
     fi
   else
     # if just a increment
-    if [[ $INC == true ]] 
+    if [[ $INC == true ]]
     then
       let "OUT = $EXIST + 1"
     else
@@ -158,7 +158,7 @@ OUT_Z=$OUT
 if [[  "x$ARG_X" == "x" ]] && [[ "x$ARG_Y" == "x" ]] && [[ "x$ARG_Z" == "x" ]]
 then
   if [[ $XINC == false ]] && [[ $YINC == false ]] && [[ $ZINC == false ]]
-  then 
+  then
     debug "defaulting to increment of z"
     let "OUT_Z += 1"
   fi
@@ -171,5 +171,5 @@ then
 fi
 if [[ $DRY_RUN == false ]] && [[ $VERBOSE == false ]]
 then
-  sed -i 's/\(version: \).*/\1'"$FINAL_VERSION"'/i' "$CHARTDIR/Chart.yaml"
+    sed -i.bak 's/\(version: \).*/\1'"$FINAL_VERSION"'/' "$CHARTDIR/Chart.yaml"
 fi
