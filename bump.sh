@@ -171,5 +171,5 @@ then
 fi
 if [[ $DRY_RUN == false ]] && [[ $VERBOSE == false ]]
 then
-    sed -i.bak 's/\(version: \).*/\1'"$FINAL_VERSION"'/' "$CHARTDIR/Chart.yaml"
+    sed -i '' -e 's/\(version: \).*/\1'"$FINAL_VERSION"'/' "$CHARTDIR/Chart.yaml"
 fi
